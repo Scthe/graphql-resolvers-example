@@ -1,24 +1,61 @@
 type Query {
-  person(id: ID!): Person!
-  people(name: String): [Person!]
+  # TODO add query by imdb
+  show(id: ID!): Show!
+  shows(name: String): ShowsList!
 }
 
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
+type ListMeta {
+  totalCount: Int!
 }
 
-type Person {
+type Show {
   id: ID!
   name: String!
-  birthYear: String!
-  gender: Gender!
-  # movies: [Movie]!
-  # starships: [Starship]!
+  type: String! # TODO enum?
+  language: String!
+  genres: [String!]!
+  status: String! # TODO enum
+  runtime: Int!
+  premiered: String! # TODO date
+  #network: String
+  #country: String
+  summary: String
+  # TODO imdb
+  seasons: SeasonsList! # Paginated collection with total
 }
 
-#type Post {
-#  id: ID!
-#  name: String
-#}
+type ShowsList {
+  node: [Show!]!
+  meta: ListMeta!
+}
+
+type Season {
+  id: ID!
+  idx: Int!
+  show: Show!
+  summary: String
+  #network: String
+  #country: String
+  episodes: EpisodesList!
+}
+
+type SeasonsList {
+  node: [Season!]!
+  meta: ListMeta!
+}
+
+type Episode {
+  id: ID!
+  idx: Int!
+  name: String!
+  show: Show!
+  season: Season!
+  summary: String
+  airdate: String! # TODO date
+  runtime: Int!
+}
+
+type EpisodesList {
+  node: [Episode!]!
+  meta: ListMeta!
+}

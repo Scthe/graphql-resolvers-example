@@ -1,6 +1,12 @@
-import { IResolverObject, IResolvers } from "apollo-server";
-import personResolver from "./Person";
+import { IResolvers } from "apollo-server";
+import showResolver from "./Show";
+import seasonResolver from "./Season";
+import episodeResolver from "./Episode";
 
-const resolvers: Array<IResolvers> = [personResolver as IResolvers<any, any>];
+const resolvers: Array<IResolvers> = [
+  showResolver,
+  seasonResolver,
+  episodeResolver,
+];
 
 export default resolvers;

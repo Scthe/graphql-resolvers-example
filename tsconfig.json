@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": [],
+    "lib": ["ES2020"],
     "allowJs": true,
     "sourceMap": true,
     "outDir": "dist",

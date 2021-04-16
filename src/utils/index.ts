@@ -1,5 +1,3 @@
-export { copyFromRestResponse } from "./graphql";
-
 export const removePrefix = (str: string, prefix: string) =>
   str.startsWith("/") ? str.substr(prefix.length) : str;
 

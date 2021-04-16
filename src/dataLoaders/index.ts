@@ -1,13 +1,12 @@
-// import { Config, GraphQLServerOptions, DataSource } from "apollo-server"
-// import { Config, GraphQLServerOptions, DataSource } from "apollo-datasource"
-import GqlContext from "GqlContext";
-import PersonAPI from "./PersonAPI";
-
-// type DataSources<T> = NonNullable<Config<T, any>["dataSources"]>;
+import ShowsAPI from "./tvmaze/ShowsAPI";
+import SeasonsAPI from "./tvmaze/SeasonsAPI";
+import EpisodesAPI from "./tvmaze/EpisodesAPI";
 
 const dataSources = () => {
   return {
-    personAPI: new PersonAPI(),
+    showsAPI: new ShowsAPI(),
+    seasonsAPI: new SeasonsAPI(),
+    episodesAPI: new EpisodesAPI(),
   };
 };
 

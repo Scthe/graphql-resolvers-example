@@ -1564,6 +1564,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/object-hash@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@types/object-hash@npm:2.1.0"
+  checksum: 276948b96fff4f3ddbb37a566401fbdcd68ffac16267e464bf73b3448d3a7f8b2876be39c8a731478710d5b5a01dc4a61d927b12babfbf02e4acba6a3d8a0a42
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -3667,6 +3674,7 @@ fsevents@~2.3.1:
     "@types/lodash.merge": ^4.6.6
     "@types/node": ^14.14.40
     "@types/node-fetch": ^2.5.10
+    "@types/object-hash": ^2.1.0
     apollo-datasource: ^0.8.0
     apollo-server: ^2.23.0
     apollo-server-express: ^2.23.0
@@ -3676,6 +3684,7 @@ fsevents@~2.3.1:
     lodash.merge: ^4.6.2
     node-fetch: ^2.6.1
     node-ts: ^5.1.1
+    object-hash: ^2.1.1
     prettier: ^2.2.1
     ts-node-dev: ^1.1.6
     tsconfig-paths: ^3.9.0
@@ -5189,6 +5198,13 @@ fsevents@~2.3.1:
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: 66cf021898fc1b13ea573ea8635fbd5a76533f50cecbc2fcd5eee1e8029af41bcebe7023788b6d0e06cbe4401ecea075d972f78ec74467cdc571a0f1a4d1a081
+  languageName: node
+  linkType: hard
+
+"object-hash@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "object-hash@npm:2.1.1"
+  checksum: fe49a0864cba7ac4055c604295692ae75f5f4d22ba929aaaa987469809d17ab030d1111e8f0d425a070fa4a78b8021b55260e26e98b66b59e0f7be2bd9069fb8
   languageName: node
   linkType: hard
 
