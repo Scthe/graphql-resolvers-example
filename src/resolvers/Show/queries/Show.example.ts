@@ -1,3 +1,9 @@
+export const GET_SINGLE_N_PLUS_1 = `{
+  show(id: 118){
+    id
+  }
+}`;
+
 export const GET_SINGLE_GQL = `{
   show(id: 118){
     id
@@ -14,18 +20,6 @@ export const GET_SINGLE_GQL = `{
           name
         }
       }
-    }
-  }
-}`;
-
-export const GET_LIST_GQL = `{
-  shows(name: "House"){
-    meta{
-      totalCount
-    }
-    node{
-  		id
-  	  name
     }
   }
 }`;

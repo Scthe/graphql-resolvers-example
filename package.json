@@ -4,11 +4,15 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
+    "postinstall": "echo husky install",
     "start": "ts-node-dev -r tsconfig-paths/register --respawn ./src/index.ts",
     "build": "rm -rf dist && tsc -p tsconfig.json",
     "generate:gql-types": "graphql-codegen --config codegen.yml",
     "gen": "yarn generate:gql-types",
-    "prettier": "prettier --write src"
+    "prettier": "prettier --write src",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "test": "jest --verbose",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "apollo-server": "^2.23.0",
@@ -29,7 +33,11 @@
     "@types/node": "^14.14.40",
     "@types/node-fetch": "^2.5.10",
     "@types/object-hash": "^2.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
     "apollo-datasource": "^0.8.0",
+    "eslint": "^7.24.0",
+    "husky": "^6.0.0",
     "node-ts": "^5.1.1",
     "prettier": "^2.2.1",
     "ts-node-dev": "^1.1.6",
