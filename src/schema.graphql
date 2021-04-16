@@ -1,0 +1,24 @@
+type Query {
+  person(id: ID!): Person!
+  people(name: String): [Person!]
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+type Person {
+  id: ID!
+  name: String!
+  birthYear: String!
+  gender: Gender!
+  # movies: [Movie]!
+  # starships: [Starship]!
+}
+
+#type Post {
+#  id: ID!
+#  name: String
+#}
