@@ -11,11 +11,15 @@ export type RootType = {
   seasonId: ID;
 };
 
-type ResolverType = BaseResolverType<RootType, Episode, {
-  id: ID,
-  show: ShowType,
-  season: SeasonType,
-}>;
+type ResolverType = BaseResolverType<
+  RootType,
+  Episode,
+  {
+    id: ID;
+    show: ShowType;
+    season: SeasonType;
+  }
+>;
 
 const getItem = (root: RootType, context: GqlContext) => {
   return context.dataSources.episodesAPI.getOne(root.id);

@@ -1,4 +1,4 @@
-import url from "url"
+import url from "url";
 import fetch, { Response } from "node-fetch";
 import { DataSource } from "apollo-datasource";
 import GqlContext from "GqlContext";
@@ -8,10 +8,7 @@ type DataLoaderResult<T> = T | Error;
 export type DataloaderReturnType<T> = Promise<DataLoaderResult<T>[]>;
 
 export default abstract class RestResource extends DataSource<GqlContext> {
-
-  constructor(
-    protected readonly baseURL = ""
-  ) {
+  constructor(protected readonly baseURL = "") {
     super();
   }
 
@@ -34,9 +31,9 @@ export default abstract class RestResource extends DataSource<GqlContext> {
 
   protected collectSettledPromises<T, E = T>(
     results: PromiseSettledResult<T>[],
-    mapperFn?: (e: T) => E,
+    mapperFn?: (e: T) => E
   ): DataLoaderResult<E>[] {
-    return results.map(e => {
+    return results.map((e) => {
       if (e.status === "rejected") {
         return e.reason;
       }

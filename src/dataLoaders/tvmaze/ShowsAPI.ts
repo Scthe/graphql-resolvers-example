@@ -2,7 +2,7 @@ import DataLoader from "dataloader";
 
 import RestResource, {
   DataloaderReturnType,
-  ResourceList
+  ResourceList,
 } from "../RestResource";
 import * as tvmaze from "./tvmaze.api";
 
@@ -30,7 +30,8 @@ export default class ShowsAPI extends RestResource {
 
   getOne = async (id: ID): Promise<Show> => this.dataLoader.load(id);
 
-  findByName = async (name: string): ResourceList => this.searchDataLoader.load(name);
+  findByName = async (name: string): ResourceList =>
+    this.searchDataLoader.load(name);
 
   private addToCache = (item: Show): void => {
     this.dataLoader.prime(item.id, item);
@@ -40,7 +41,7 @@ export default class ShowsAPI extends RestResource {
     // We get array of ids, normally we would want to use api like:
     // `shows/?id=1&id=2&id=42` to get all data in one request (thus solving n+1).
     // Since our API does not have this, we need to do this manually.
-    const promises = ids.map(id => this.get<Show>(`shows/${id}`));
+    const promises = ids.map((id) => this.get<Show>(`shows/${id}`));
     const result = await Promise.allSettled(promises);
 
     // It is important that we return objects in same order as `ids` were provided.
@@ -48,10 +49,12 @@ export default class ShowsAPI extends RestResource {
     return this.collectSettledPromises(result);
   };
 
-  private search = async (searchNames: readonly string[]): DataloaderReturnType<ID[]> => {
+  private search = async (
+    searchNames: readonly string[]
+  ): DataloaderReturnType<ID[]> => {
     const name = searchNames[0]; // batching is off for this request
     const items = await this.get<ShowsListItem[]>(`search/shows?q=${name}`);
-    const ids = items.map(e => {
+    const ids = items.map((e) => {
       this.addToCache(e.show);
       return e.show.id;
     });

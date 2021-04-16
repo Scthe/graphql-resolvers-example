@@ -2,7 +2,7 @@ import DataLoader from "dataloader";
 
 import RestResource, {
   DataloaderReturnType,
-  ResourceList
+  ResourceList,
 } from "../RestResource";
 import * as tvmaze from "./tvmaze.api";
 
@@ -26,10 +26,12 @@ export default class SeasonsAPI extends RestResource {
     if (!this.cache.has(id)) {
       // Normally we would have separate REST request, but API does not have it.
       // This method should be called with ids from `getByShow` only.
-      throw new Error(`No season with id='${id}' in cache, this should never happen`);
+      throw new Error(
+        `No season with id='${id}' in cache, this should never happen`
+      );
     }
     return this.cache.get(id)!;
-  }
+  };
 
   getByShow = (showId: ID): ResourceList => this.dataLoader.load(showId);
 
@@ -37,10 +39,12 @@ export default class SeasonsAPI extends RestResource {
     this.cache.set(item.id, item);
   };
 
-  private _getByShow = async (showIds: readonly ID[]): DataloaderReturnType<ID[]> => {
+  private _getByShow = async (
+    showIds: readonly ID[]
+  ): DataloaderReturnType<ID[]> => {
     const showId = showIds[0]; // batching is off for this request
     const items = await this.get<SeasonListItem[]>(`/shows/${showId}/seasons`);
-    const ids = items.map(e => {
+    const ids = items.map((e) => {
       this.addToCache(e);
       return e.id;
     });

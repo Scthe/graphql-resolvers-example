@@ -4,7 +4,7 @@ import DataLoader from "dataloader";
 
 import RestResource, {
   DataloaderReturnType,
-  ResourceList
+  ResourceList,
 } from "../RestResource";
 import * as tvmaze from "./tvmaze.api";
 
@@ -12,7 +12,7 @@ import * as tvmaze from "./tvmaze.api";
 export interface Episode {
   id: ID;
   idx: number;
-  name: string
+  name: string;
   summary?: string;
   airdate: string;
   runtime: number;
@@ -20,7 +20,7 @@ export interface Episode {
 /** Type returned from listing endpoint */
 // type EpisodeListItem = Episode;
 
-type EpisodeBySeasonKey = { showId: ID; seasonId: ID; }
+type EpisodeBySeasonKey = { showId: ID; seasonId: ID };
 
 export default class EpisodesAPI extends RestResource {
   constructor() {
@@ -29,27 +29,35 @@ export default class EpisodesAPI extends RestResource {
 
   getOne = async (id: ID): Promise<Episode> => this.dataLoader.load(id);
 
-  findBySeason = async (showId: ID, seasonId: ID): ResourceList => this.bySeasonDataLoader.load({
-    showId, seasonId
-  });
+  findBySeason = async (showId: ID, seasonId: ID): ResourceList =>
+    this.bySeasonDataLoader.load({
+      showId,
+      seasonId,
+    });
 
   private addToCache = (...item: Episode[]): void => {
-    item.forEach(item => this.dataLoader.prime(item.id, item));
+    item.forEach((item) => this.dataLoader.prime(item.id, item));
   };
 
-  private getByIds = async (ids: readonly ID[]): DataloaderReturnType<Episode> => {
-    const promises = ids.map(id => this.get<Episode>(`/episodes/${id}`));
+  private getByIds = async (
+    ids: readonly ID[]
+  ): DataloaderReturnType<Episode> => {
+    const promises = ids.map((id) => this.get<Episode>(`/episodes/${id}`));
     const result = await Promise.allSettled(promises);
     return this.collectSettledPromises(result);
   };
 
-  private search = async (keys: readonly EpisodeBySeasonKey[]): DataloaderReturnType<ID[]> => {
-    const promises = keys.map(key => this.get<Episode[]>(`seasons/${key.seasonId}/episodes`));
+  private search = async (
+    keys: readonly EpisodeBySeasonKey[]
+  ): DataloaderReturnType<ID[]> => {
+    const promises = keys.map((key) =>
+      this.get<Episode[]>(`seasons/${key.seasonId}/episodes`)
+    );
     const result = await Promise.allSettled(promises);
 
-    return this.collectSettledPromises(result, episodes => {
+    return this.collectSettledPromises(result, (episodes) => {
       this.addToCache(...episodes);
-      return episodes.map(e => e.id);
+      return episodes.map((e) => e.id);
     });
   };
 

@@ -13,14 +13,22 @@ const getItems = (root: RootType, context: GqlContext) => {
   return context.dataSources.showsAPI.findByName(root.name);
 };
 
-const meta = async (root: RootType, _args: any, context: GqlContext): Promise<ListMeta> => {
+const meta = async (
+  root: RootType,
+  _args: any,
+  context: GqlContext
+): Promise<ListMeta> => {
   const ids = await getItems(root, context);
   return {
-    totalCount: ids.length
+    totalCount: ids.length,
   };
 };
 
-const node = (root: RootType, _args: any, context: GqlContext): Promise<NodeType[]> => {
+const node = (
+  root: RootType,
+  _args: any,
+  context: GqlContext
+): Promise<NodeType[]> => {
   return getItems(root, context);
 };
 
@@ -28,6 +36,5 @@ const resolver: ResolverType = {
   node,
   meta,
 };
-
 
 export default resolver;
