@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphQL: show() should fetch basic item properties 1`] = `
+Object {
+  "show": Object {
+    "genres": Array [
+      "Drama",
+      "Mystery",
+      "Medical",
+    ],
+    "id": "118",
+    "language": "English",
+    "name": "House",
+    "premiered": "2004-11-16",
+    "runtime": 60,
+    "status": "Ended",
+    "summary": "<p>Sink your teeth into meaty drama and intrigue with <b>House</b>, FOX's take on mystery, where the villain is a medical malady and the hero is an irreverent, controversial doctor who trusts no one, least of all his patients.</p>",
+    "type": "Scripted",
+  },
+}
+`;
+
+exports[`GraphQL: show() should fetch show with all children depdendencies 1`] = `
+Object {
+  "id": "118",
+  "name": "House",
+  "seasons": Object {
+    "meta": Object {
+      "totalCount": 2,
+    },
+    "node": Array [
+      Object {
+        "episodes": Object {
+          "meta": Object {
+            "totalCount": 2,
+          },
+          "node": Array [
+            Object {
+              "id": "1231",
+              "name": "season-123-episode-1",
+              "season": Object {
+                "id": "123",
+                "idx": 1,
+              },
+              "show": Object {
+                "id": "118",
+                "name": "House",
+              },
+            },
+            Object {
+              "id": "1232",
+              "name": "season-123-episode-2",
+              "season": Object {
+                "id": "123",
+                "idx": 1,
+              },
+              "show": Object {
+                "id": "118",
+                "name": "House",
+              },
+            },
+          ],
+        },
+        "id": "123",
+        "idx": 1,
+        "show": Object {
+          "id": "118",
+          "name": "House",
+        },
+      },
+      Object {
+        "episodes": Object {
+          "meta": Object {
+            "totalCount": 1,
+          },
+          "node": Array [
+            Object {
+              "id": "9991",
+              "name": "season-999-episode-1",
+              "season": Object {
+                "id": "999",
+                "idx": 2,
+              },
+              "show": Object {
+                "id": "118",
+                "name": "House",
+              },
+            },
+          ],
+        },
+        "id": "999",
+        "idx": 2,
+        "show": Object {
+          "id": "118",
+          "name": "House",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`GraphQL: show() should only fetch what is needed 1`] = `
+Object {
+  "show": Object {
+    "id": "118",
+  },
+}
+`;

@@ -19,7 +19,7 @@ type Show {
   premiered: String! # TODO date
   #network: String
   #country: String
-  summary: String
+  summary: String!
   # TODO imdb
   seasons: SeasonsList! # Paginated collection with total
 }

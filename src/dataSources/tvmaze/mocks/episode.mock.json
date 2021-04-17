@@ -1,0 +1,22 @@
+{
+  "id": 9115,
+  "url": "https://www.tvmaze.com/episodes/9115/house-4x15-houses-head",
+  "name": "House's Head",
+  "season": 4,
+  "number": 15,
+  "type": "regular",
+  "airdate": "2008-05-12",
+  "airtime": "21:00",
+  "airstamp": "2008-05-13T01:00:00+00:00",
+  "runtime": 60,
+  "image": {
+    "medium": "https://static.tvmaze.com/uploads/images/medium_landscape/57/144625.jpg",
+    "original": "https://static.tvmaze.com/uploads/images/original_untouched/57/144625.jpg"
+  },
+  "summary": "<p>House finds himself dazed, confused and covered in blood after surviving a bus accident that left dozens seriously injured. Unable to clearly recall the events leading up to the crash due to his head injuries, House becomes convinced through his flashbacks that a fellow bus passenger was exhibiting signs of a deadly illness prior to the crash.</p>",
+  "_links": {
+    "self": {
+      "href": "https://api.tvmaze.com/episodes/9115"
+    }
+  }
+}

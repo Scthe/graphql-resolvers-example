@@ -82,11 +82,13 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
+  // moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/src/' } )
   moduleNameMapper: {
     // '^.+\\.(css|less)$': '<rootDir>/src/CSSStub.js'
     "^GqlContext$": '<rootDir>/src/GqlContext.ts',
     "^typingsGql$": '<rootDir>/src/_generated/graphql.ts',
     "^utils/graphql$": '<rootDir>/src/utils/graphql.ts', // NOTE: this one was VERY problematic
+    "^dataSources/(.*)": "<rootDir>/src/dataSources/$1",
   },
   // moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
 

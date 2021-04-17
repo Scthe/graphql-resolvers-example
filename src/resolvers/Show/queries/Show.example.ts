@@ -18,24 +18,40 @@ export const GQL_SHOW_FIELDS = `{
   }
 }`;
 
-/*
-export const GET_SINGLE_GQL = `{
-  show(id: 118){
+export const GQL_SHOW_WITH_CHILDREN = `{
+  show(id: 118) {
     id
     name
-    seasons{
+    seasons {
+      node {
+        id
+        idx
+        show {
+          id
+          name
+        }
+        episodes {
+          node {
+            id
+            name
+            season {
+              id
+              idx
+            }
+            show {
+              id
+              name
+            }
+          }
+          meta {
+            totalCount
+          }
+        }
+      }
       meta {
         totalCount
       }
-      node{
-        id
-        idx
-        summary
-        show {
-          name
-        }
-      }
     }
   }
-}`;
-*/
+}
+`;
