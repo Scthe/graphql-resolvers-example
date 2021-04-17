@@ -20,11 +20,14 @@ const loggingPlugin: ApolloServerPlugin<GqlContext> = {
   requestDidStart() {
     return {
       didResolveOperation(gqlReq) {
-        const opName = gqlReq.operationName != null ? gqlReq.operationName : "unknown_operation";
+        const opName =
+          gqlReq.operationName != null
+            ? gqlReq.operationName
+            : "unknown_operation";
         log(chalk.green.bold("GQL"), opName);
-      }
-    }
-  }
+      },
+    };
+  },
 };
 const server = new ApolloServer({
   typeDefs,
@@ -36,13 +39,12 @@ const server = new ApolloServer({
   debug: true,
   plugins: [loggingPlugin],
   logger: {
-    debug: () => { },
-    info: () => { },
-    warn: () => { },
+    debug: () => {},
+    info: () => {},
+    warn: () => {},
     error: (e) => console.error(e),
   },
 });
-
 
 // setup express
 const app = express();
@@ -50,7 +52,6 @@ app.use((req: express.Request, _res: express.Response, next: Function) => {
   log(chalk.green.bold(`\n${req.method} ${req.url}`));
   next();
 });
-
 
 // set up express with apollo server
 server.applyMiddleware({ app, path: gqlEndpoint });

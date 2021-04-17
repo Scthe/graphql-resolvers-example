@@ -1,11 +1,5 @@
-import { IDelegateToSchemaOptions } from "apollo-server-express";
-import objectHash from "object-hash";
-import DataLoader from "dataloader";
-
-import RestResource, {
-  DataloaderReturnType,
-  ResourceList,
-} from "../RestResource";
+import RestResource, { ResourceList } from "../RestResource";
+import MyDataLoader, { DataLoaderReturnType } from "../MyDataLoader";
 import * as tvmaze from "./tvmaze.api";
 
 /*** Structure of the object returned from tvmaze API */
@@ -17,11 +11,10 @@ export interface Episode {
   airdate: string;
   runtime: number;
 }
-/** Type returned from listing endpoint */
-// type EpisodeListItem = Episode;
 
 type EpisodeBySeasonKey = { showId: ID; seasonId: ID };
 
+/** Api to get episodes data */
 export default class EpisodesAPI extends RestResource {
   constructor() {
     super(tvmaze.URL);
@@ -41,33 +34,31 @@ export default class EpisodesAPI extends RestResource {
 
   private getByIds = async (
     ids: readonly ID[]
-  ): DataloaderReturnType<Episode> => {
+  ): DataLoaderReturnType<Episode> => {
     const promises = ids.map((id) => this.get<Episode>(`/episodes/${id}`));
     const result = await Promise.allSettled(promises);
-    return this.collectSettledPromises(result);
+    return MyDataLoader.collectSettledPromises(result);
   };
 
   private search = async (
     keys: readonly EpisodeBySeasonKey[]
-  ): DataloaderReturnType<ID[]> => {
+  ): DataLoaderReturnType<ID[]> => {
     const promises = keys.map((key) =>
       this.get<Episode[]>(`seasons/${key.seasonId}/episodes`)
     );
     const result = await Promise.allSettled(promises);
 
-    return this.collectSettledPromises(result, (episodes) => {
+    return MyDataLoader.collectSettledPromises(result, (episodes) => {
       this.addToCache(...episodes);
       return episodes.map((e) => e.id);
     });
   };
 
   // has to be on the end of the file, cause `this.getByIds` is undefined otherwise
-  private dataLoader = new DataLoader(this.getByIds);
+  private dataLoader = new MyDataLoader(this.getByIds);
 
   // Separate dataloader that maps {showId, seasonId} to ids of episodes.
-  private bySeasonDataLoader = new DataLoader(this.search, {
-    // IMPORTANT: this dataloader has a composite key. We could have used just seasonID,
-    // but this is a better showcase od DataLoader.
-    cacheKeyFn: (key: EpisodeBySeasonKey) => objectHash(key),
-  });
+  // IMPORTANT: this dataloader has a composite key. We could have used just seasonID,
+  // but this is a better showcase od DataLoader.
+  private bySeasonDataLoader = new MyDataLoader(this.search);
 }

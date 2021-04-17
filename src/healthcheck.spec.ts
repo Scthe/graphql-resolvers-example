@@ -12,8 +12,8 @@ describe("GraphQL: healthcheck", () => {
     return supertest(app)
       .get(url)
       .expect(200)
-      .then(resp => {
+      .then((resp) => {
         expect(resp.body).toHaveProperty("status", "pass");
-      })
+      });
   });
 });

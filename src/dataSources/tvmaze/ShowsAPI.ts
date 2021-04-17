@@ -1,9 +1,5 @@
-import DataLoader from "dataloader";
-
-import RestResource, {
-  DataloaderReturnType,
-  ResourceList,
-} from "../RestResource";
+import RestResource, { ResourceList } from "../RestResource";
+import MyDataLoader, { DataLoaderReturnType } from "../MyDataLoader";
 import * as tvmaze from "./tvmaze.api";
 
 /*** Structure of the object returned from tvmaze API */
@@ -23,6 +19,7 @@ export interface Show {
 
 type ShowsListItem = tvmaze.ApiListResponse<"show", Show>;
 
+/** Api to get shows data */
 export default class ShowsAPI extends RestResource {
   constructor() {
     super(tvmaze.URL);
@@ -34,10 +31,10 @@ export default class ShowsAPI extends RestResource {
     this.searchDataLoader.load(name);
 
   private addToCache = (item: Show): void => {
-    this.dataLoader.prime(item.id, item);
+    this.dataLoader.addToCache("id", item);
   };
 
-  private getByIds = async (ids: readonly ID[]): DataloaderReturnType<Show> => {
+  private getByIds = async (ids: readonly ID[]): DataLoaderReturnType<Show> => {
     // We get array of ids, normally we would want to use api like:
     // `shows/?id=1&id=2&id=42` to get all data in one request (thus solving n+1).
     // Since our API does not have this, we need to do this manually.
@@ -46,12 +43,12 @@ export default class ShowsAPI extends RestResource {
 
     // It is important that we return objects in same order as `ids` were provided.
     // Since we do not change the order, we can just return result.
-    return this.collectSettledPromises(result);
+    return MyDataLoader.collectSettledPromises(result);
   };
 
   private search = async (
     searchNames: readonly string[]
-  ): DataloaderReturnType<ID[]> => {
+  ): DataLoaderReturnType<ID[]> => {
     const name = searchNames[0]; // batching is off for this request
     const items = await this.get<ShowsListItem[]>(`search/shows?q=${name}`);
     const ids = items.map((e) => {
@@ -62,13 +59,13 @@ export default class ShowsAPI extends RestResource {
   };
 
   // has to be on the end of the file, cause `this.getByIds` is undefined otherwise
-  private dataLoader = new DataLoader(this.getByIds);
+  private dataLoader = new MyDataLoader(this.getByIds);
 
   // Separate dataloader that maps search phrase to ID[].
   // Since ID[] is not the same as `Show`.
   // We use dataloader, since there is no separate function to get totalCount of shows.
   // In our resolver implementation we call `findByName` twice (once for data and once for totalCount), and we want to deduplicate that with cache.
-  private searchDataLoader = new DataLoader(this.search, {
+  private searchDataLoader = new MyDataLoader(this.search, {
     batch: false, // turn off batching - we will always get a single item to `this.search`
   });
 }

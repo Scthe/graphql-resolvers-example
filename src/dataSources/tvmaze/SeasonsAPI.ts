@@ -1,9 +1,5 @@
-import DataLoader from "dataloader";
-
-import RestResource, {
-  DataloaderReturnType,
-  ResourceList,
-} from "../RestResource";
+import RestResource, { ResourceList } from "../RestResource";
+import MyDataLoader, { DataLoaderReturnType } from "../MyDataLoader";
 import * as tvmaze from "./tvmaze.api";
 
 /*** Structure of the object returned from tvmaze API */
@@ -15,6 +11,7 @@ export interface Season {
 /** Type returned from listing endpoint */
 type SeasonListItem = Season;
 
+/** Api to get seasons data */
 export default class SeasonsAPI extends RestResource {
   private cache = new Map<ID, Season>();
 
@@ -41,7 +38,7 @@ export default class SeasonsAPI extends RestResource {
 
   private _getByShow = async (
     showIds: readonly ID[]
-  ): DataloaderReturnType<ID[]> => {
+  ): DataLoaderReturnType<ID[]> => {
     const showId = showIds[0]; // batching is off for this request
     const items = await this.get<SeasonListItem[]>(`/shows/${showId}/seasons`);
     const ids = items.map((e) => {
@@ -51,7 +48,7 @@ export default class SeasonsAPI extends RestResource {
     return [ids]; // wrap in array cause `showIds` is an array
   };
 
-  private dataLoader = new DataLoader(this._getByShow, {
+  private dataLoader = new MyDataLoader(this._getByShow, {
     batch: false, // turn off batching - we will always get a single item to `this.search`
   });
 }

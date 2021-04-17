@@ -21,9 +21,7 @@ describe("GraphQL: show()", () => {
 
   const mockSuccessShowResponse = (item = ShowMock) => {
     // NOTE: this allows for ONE request
-    scope = nock("https://api.tvmaze.com")
-      .get("/shows/118")
-      .reply(200, item);
+    scope = nock("https://api.tvmaze.com").get("/shows/118").reply(200, item);
   };
 
   const mockSuccessSeasonsResponse = () => {
@@ -40,19 +38,14 @@ describe("GraphQL: show()", () => {
 
     scope!
       .get("/shows/118/seasons")
-      .reply(200, [
-        seasonMock("123", 1),
-        seasonMock("999", 2),
-      ])
+      .reply(200, [seasonMock("123", 1), seasonMock("999", 2)])
       .get("/seasons/123/episodes")
       .reply(200, [
         episodeMock(1231, "season-123-episode-1"),
         episodeMock(1232, "season-123-episode-2"),
       ])
       .get("/seasons/999/episodes")
-      .reply(200, [
-        episodeMock(9991, "season-999-episode-1"),
-      ]);
+      .reply(200, [episodeMock(9991, "season-999-episode-1")]);
   };
 
   test("should only fetch what is needed", () => {
@@ -63,11 +56,11 @@ describe("GraphQL: show()", () => {
       .send({
         query: gqlExamples.GQL_SHOW_ONLY_ID,
       })
-      .then(resp => {
+      .then((resp) => {
         const item = resp.body.data;
         expect(item.show.id).toBe("118");
         expect(item).toMatchSnapshot(); // just for a good measure
-      })
+      });
   });
 
   test("should fetch basic item properties", () => {
@@ -80,7 +73,7 @@ describe("GraphQL: show()", () => {
       .send({
         query: gqlExamples.GQL_SHOW_FIELDS,
       })
-      .then(resp => {
+      .then((resp) => {
         const item = resp.body.data;
         expect(item.show.id).toBe("" + ShowMock.id);
         expect(item).toMatchSnapshot(); // just for a good measure
@@ -101,7 +94,7 @@ describe("GraphQL: show()", () => {
       .send({
         query: gqlExamples.GQL_SHOW_WITH_CHILDREN,
       })
-      .then(resp => {
+      .then((resp) => {
         const item = resp.body.data.show as GqlSchemaShow;
         expect(item.id).toBe("" + ShowMock.id);
         expect(item.seasons.meta.totalCount).toBe(2);
