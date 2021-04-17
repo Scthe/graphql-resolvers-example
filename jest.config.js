@@ -1,6 +1,3 @@
-// const { pathsToModuleNameMapper } = require('ts-jest/utils')
-// const { compilerOptions } = require('./tsconfig')
-
 /*
  * For a detailed explanation regarding each configuration property, visit:
  * https://jestjs.io/docs/en/configuration.html
@@ -87,11 +84,9 @@ module.exports = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     // '^.+\\.(css|less)$': '<rootDir>/src/CSSStub.js'
-    // ...pathsToModuleNameMapper(compilerOptions.paths),
-    // NOTE: following causes errors:
-    // "GqlContext": '<rootDir>/src/GqlContext.ts',
-    // "typingsGql": '<rootDir>/src/_generated/graphql.ts',
-    // "utils": '<rootDir>/src/utils',
+    "^GqlContext$": '<rootDir>/src/GqlContext.ts',
+    "^typingsGql$": '<rootDir>/src/_generated/graphql.ts',
+    "^utils/graphql$": '<rootDir>/src/utils/graphql.ts', // NOTE: this one was VERY problematic
   },
   // moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
 
@@ -137,10 +132,10 @@ module.exports = {
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
   // setupFiles: [],
+  setupFiles: ['<rootDir>/src/jest-setup.ts'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
-  setupFilesAfterEnv: ['<rootDir>/src/jest-setup.ts'],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -170,7 +165,7 @@ module.exports = {
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$',
+  testRegex: '((\\.|/)(test|spec))\\.[jt]sx?$',
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: undefined,
