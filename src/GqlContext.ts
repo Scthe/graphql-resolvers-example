@@ -1,6 +1,6 @@
 import { ExpressContext } from "apollo-server-express";
 import express from "express";
-import type { DataSources } from "./dataLoaders";
+import type { DataSources } from "./dataSources";
 
 interface GqlContext {
   req: express.Request;
