@@ -4,6 +4,7 @@ import nock, { Scope } from "nock";
 import app from "../../../index";
 import * as gqlExamples from "./Show.example";
 import { Show as GqlSchemaShow } from "typingsGql";
+import { setupNock } from "utils/forTests";
 
 import ShowMock from "dataSources/tvmaze/mocks/show.mock.json";
 import SeasonMock from "dataSources/tvmaze/mocks/season.mock.json";
@@ -12,19 +13,10 @@ import EpisodeMock from "dataSources/tvmaze/mocks/episode.mock.json";
 describe("GraphQL: show()", () => {
   let scope: Scope | null = null;
 
-  beforeEach(() => {
-    // each jest test loads modules anew
-    nock.disableNetConnect();
-    nock.enableNetConnect("127.0.0.1");
-  });
+  setupNock();
 
   afterEach(() => {
     scope && scope.done(); // verify all planned requests were actually done
-    nock.cleanAll();
-  });
-
-  afterAll(() => {
-    nock.restore(); // https://github.com/nock/nock/issues/1817
   });
 
   const mockSuccessShowResponse = (item = ShowMock) => {
@@ -69,7 +61,7 @@ describe("GraphQL: show()", () => {
     return supertest(app)
       .post("/graphql")
       .send({
-        query: gqlExamples.GQL_SINGLE_SHOW_ONLY_ID,
+        query: gqlExamples.GQL_SHOW_ONLY_ID,
       })
       .then(resp => {
         const item = resp.body.data;

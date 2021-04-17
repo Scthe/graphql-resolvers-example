@@ -87,8 +87,8 @@ module.exports = {
     // '^.+\\.(css|less)$': '<rootDir>/src/CSSStub.js'
     "^GqlContext$": '<rootDir>/src/GqlContext.ts',
     "^typingsGql$": '<rootDir>/src/_generated/graphql.ts',
-    "^utils/graphql$": '<rootDir>/src/utils/graphql.ts', // NOTE: this one was VERY problematic
     "^dataSources/(.*)": "<rootDir>/src/dataSources/$1",
+    "^utils/(.*)": "<rootDir>/src/utils/$1",
   },
   // moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
 

@@ -1,10 +1,12 @@
-export const GQL_SINGLE_SHOW_ONLY_ID = `{
+export const GQL_SHOW_ONLY_ID = `
+query GetShowOnlyId {
   show(id: 118){
     id
   }
 }`;
 
-export const GQL_SHOW_FIELDS = `{
+export const GQL_SHOW_FIELDS = `
+query GetShowFields {
   show(id: 118){
     id
     name
@@ -18,7 +20,8 @@ export const GQL_SHOW_FIELDS = `{
   }
 }`;
 
-export const GQL_SHOW_WITH_CHILDREN = `{
+export const GQL_SHOW_WITH_CHILDREN = `
+query GetShowWithChildren {
   show(id: 118) {
     id
     name
