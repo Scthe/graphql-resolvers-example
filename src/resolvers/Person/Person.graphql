@@ -3,10 +3,19 @@ extend type Query {
   people(name: String): PeoplesList!
 }
 
+enum Gender {
+  MALE
+  FEMALE
+}
+
 type Person {
   id: ID!
   name: String!
   castCredits: ShowCharactersList!
+  countryOfBirth: String
+  birthday: String # TODO date
+  deathday: String # TODO date
+  gender: Gender
 }
 
 type PeoplesList {

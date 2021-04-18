@@ -6,6 +6,12 @@ import * as tvmaze from "./tvmaze.api";
 export interface Person {
   id: ID;
   name: string;
+  country?: {
+    name: string;
+  };
+  birthday?: string;
+  deathday?: string;
+  gender?: "Male" | "Female";
 }
 
 export type PersonSearchItem = tvmaze.SearchResponseItem<"person", Person>;
@@ -21,23 +27,16 @@ export default class PeopleAPI extends RestResource {
   findByName = async (name: string): ResourceList =>
     this.searchDataLoader.load(name);
 
-  private addToCache = (item: Person): void => {
+  addToCache = (item: Person): void => {
     this.dataLoader.addToCache("id", item);
   };
 
   private getByIds = async (
     ids: readonly ID[]
   ): DataLoaderReturnType<Person> => {
-    // http://api.tvmaze.com/people/25439?embed=castcredits
-    // const mockPerson = (id: ID): Person => ({ id, name: "mock-name" });
-    // return ids.map(mockPerson);
-
     // TODO `people/${id}?embed=castcredits` ?
     const promises = ids.map((id) => this.get<Person>(`people/${id}`));
     const result = await Promise.allSettled(promises);
-
-    // It is important that we return objects in same order as `ids` were provided.
-    // Since we do not change the order, we can just return result.
     return MyDataLoader.collectSettledPromises(result);
   };
 
@@ -55,7 +54,5 @@ export default class PeopleAPI extends RestResource {
 
   private dataLoader = new MyDataLoader(this.getByIds);
 
-  private searchDataLoader = new MyDataLoader(this.search, {
-    batch: false, // turn off batching - we will always get a single item to `this.search`
-  });
+  private searchDataLoader = new MyDataLoader(this.search, { batch: false });
 }

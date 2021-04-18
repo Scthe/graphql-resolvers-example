@@ -1,0 +1,40 @@
+{
+  "person": {
+    "id": 25439,
+    "url": "https://www.tvmaze.com/people/25439/hugh-laurie",
+    "name": "Hugh Laurie",
+    "country": {
+      "name": "United Kingdom",
+      "code": "GB",
+      "timezone": "Europe/London"
+    },
+    "birthday": "1959-06-11",
+    "deathday": null,
+    "gender": "Male",
+    "image": {
+      "medium": "https://static.tvmaze.com/uploads/images/medium_portrait/46/117107.jpg",
+      "original": "https://static.tvmaze.com/uploads/images/original_untouched/46/117107.jpg"
+    },
+    "_links": {
+      "self": {
+        "href": "https://api.tvmaze.com/people/25439"
+      }
+    }
+  },
+  "character": {
+    "id": 32873,
+    "url": "https://www.tvmaze.com/characters/32873/house-dr-gregory-house",
+    "name": "Dr. Gregory House",
+    "image": {
+      "medium": "https://static.tvmaze.com/uploads/images/medium_portrait/0/1348.jpg",
+      "original": "https://static.tvmaze.com/uploads/images/original_untouched/0/1348.jpg"
+    },
+    "_links": {
+      "self": {
+        "href": "https://api.tvmaze.com/characters/32873"
+      }
+    }
+  },
+  "self": false,
+  "voice": false
+}

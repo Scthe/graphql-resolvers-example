@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphQL: person() should fetch basic item properties 1`] = `
+Object {
+  "birthday": "1959-06-11",
+  "countryOfBirth": "United Kingdom",
+  "deathday": null,
+  "gender": "MALE",
+  "id": "25439",
+  "name": "Hugh Laurie",
+}
+`;
+
+exports[`GraphQL: person() should fetch show with all children depdendencies 1`] = `
+Object {
+  "castCredits": Object {
+    "meta": Object {
+      "totalCount": 2,
+    },
+    "node": Array [
+      Object {
+        "id": "1",
+        "name": "Dr. Gregory House",
+        "person": Object {
+          "id": "25439",
+          "name": "Hugh Laurie",
+        },
+        "show": Object {
+          "id": "100",
+          "name": "House",
+        },
+      },
+      Object {
+        "id": "5",
+        "name": "The Prince Regent",
+        "person": Object {
+          "id": "25439",
+          "name": "Hugh Laurie",
+        },
+        "show": Object {
+          "id": "200",
+          "name": "Blackadder",
+        },
+      },
+    ],
+  },
+  "id": "25439",
+  "name": "Hugh Laurie",
+}
+`;
+
+exports[`GraphQL: person() should only fetch what is needed 1`] = `
+Object {
+  "id": "25439",
+}
+`;

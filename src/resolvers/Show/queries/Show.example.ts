@@ -58,3 +58,30 @@ query GetShowWithChildren {
   }
 }
 `;
+
+export const GQL_SHOW_CAST = `
+query GetShowCast {
+  show(id: 118){
+    id
+    name
+
+    cast {
+      node {
+        id
+        name
+        person {
+          id
+          name
+        }
+        show {
+          id
+          name
+        }
+      }
+      meta {
+        totalCount
+      }
+    }
+
+  }
+}`;

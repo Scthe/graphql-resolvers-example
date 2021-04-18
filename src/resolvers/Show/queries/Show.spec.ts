@@ -1,5 +1,6 @@
 import supertest from "supertest";
 import nock, { Scope } from "nock";
+import merge from "deepmerge";
 
 import app from "../../../index";
 import * as gqlExamples from "./Show.example";
@@ -9,6 +10,7 @@ import { setupNock } from "utils/forTests";
 import ShowMock from "dataSources/tvmaze/mocks/show.mock.json";
 import SeasonMock from "dataSources/tvmaze/mocks/season.mock.json";
 import EpisodeMock from "dataSources/tvmaze/mocks/episode.mock.json";
+import ShowCastMock from "dataSources/tvmaze/mocks/showCast.mock.json";
 
 describe("GraphQL: show()", () => {
   let scope: Scope | null = null;
@@ -46,6 +48,32 @@ describe("GraphQL: show()", () => {
       ])
       .get("/seasons/999/episodes")
       .reply(200, [episodeMock(9991, "season-999-episode-1")]);
+  };
+
+  const mockSuccessCastResponse = () => {
+    const castMock = (
+      personId: number,
+      personName: string,
+      characterId: number,
+      characterName: string
+    ) =>
+      merge(ShowCastMock, {
+        person: {
+          id: personId,
+          name: personName,
+        },
+        character: {
+          id: characterId,
+          name: characterName,
+        },
+      });
+
+    scope!
+      .get("/shows/118/cast")
+      .reply(200, [
+        castMock(1, "Robert Sean Leonard", 120, "Dr. James Wilson"),
+        castMock(5, "Lisa Edelstein", 155, "Dr. Lisa Cuddy"),
+      ]);
   };
 
   test("should only fetch what is needed", () => {
@@ -110,6 +138,44 @@ describe("GraphQL: show()", () => {
         expect(item.seasons.node[1].episodes.node).toHaveLength(1);
         expect(item.seasons.node[1].episodes.meta.totalCount).toBe(1);
         expect(item.seasons.node[1].episodes.node[0].id).toBe("9991");
+
+        // just for a good measure
+        expect(item).toMatchSnapshot();
+      })
+      .finally();
+  });
+
+  test("should fetch cast member", () => {
+    const expectCorrectShow = (show: any) => {
+      expect(show.id).toBe("" + ShowMock.id);
+      expect(show.name).toBe(ShowMock.name);
+    };
+
+    mockSuccessShowResponse();
+    mockSuccessCastResponse();
+
+    return supertest(app)
+      .post("/graphql")
+      .send({
+        query: gqlExamples.GQL_SHOW_CAST,
+      })
+      .then((resp) => {
+        const item = resp.body.data.show as GqlSchemaShow;
+        expectCorrectShow(item);
+        expect(item.cast.meta.totalCount).toBe(2);
+        expect(item.cast.node).toHaveLength(2);
+        // check cast character 1
+        expect(item.cast.node[0].id).toBe("120");
+        expect(item.cast.node[0].name).toBe("Dr. James Wilson");
+        expectCorrectShow(item.cast.node[0].show);
+        expect(item.cast.node[0].person.id).toBe("1");
+        expect(item.cast.node[0].person.name).toBe("Robert Sean Leonard");
+        // check cast character 2
+        expect(item.cast.node[1].id).toBe("155");
+        expect(item.cast.node[1].name).toBe("Dr. Lisa Cuddy");
+        expectCorrectShow(item.cast.node[1].show);
+        expect(item.cast.node[1].person.id).toBe("5");
+        expect(item.cast.node[1].person.name).toBe("Lisa Edelstein");
 
         // just for a good measure
         expect(item).toMatchSnapshot();

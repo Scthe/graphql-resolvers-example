@@ -7,7 +7,7 @@ import { ShowsList as GqlSchemaShowsList } from "typingsGql";
 import { setupNock } from "utils/forTests";
 
 import ShowMock from "dataSources/tvmaze/mocks/show.mock.json";
-import { ShowsListItem } from "dataSources/tvmaze/ShowsAPI";
+import { ShowSearchItem } from "dataSources/tvmaze/ShowsAPI";
 
 describe("GraphQL: shows()", () => {
   let scope: Scope | null = null;
@@ -20,7 +20,7 @@ describe("GraphQL: shows()", () => {
 
   const mockSuccessShowsResponse = () => {
     // NOTE: this allows for ONE request
-    const createOneResult = (score: number, id: number): ShowsListItem => ({
+    const createOneResult = (score: number, id: number): ShowSearchItem => ({
       score,
       show: {
         ...ShowMock,

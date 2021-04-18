@@ -18,6 +18,44 @@ Object {
 }
 `;
 
+exports[`GraphQL: show() should fetch cast member 1`] = `
+Object {
+  "cast": Object {
+    "meta": Object {
+      "totalCount": 2,
+    },
+    "node": Array [
+      Object {
+        "id": "120",
+        "name": "Dr. James Wilson",
+        "person": Object {
+          "id": "1",
+          "name": "Robert Sean Leonard",
+        },
+        "show": Object {
+          "id": "118",
+          "name": "House",
+        },
+      },
+      Object {
+        "id": "155",
+        "name": "Dr. Lisa Cuddy",
+        "person": Object {
+          "id": "5",
+          "name": "Lisa Edelstein",
+        },
+        "show": Object {
+          "id": "118",
+          "name": "House",
+        },
+      },
+    ],
+  },
+  "id": "118",
+  "name": "House",
+}
+`;
+
 exports[`GraphQL: show() should fetch show with all children depdendencies 1`] = `
 Object {
   "id": "118",
