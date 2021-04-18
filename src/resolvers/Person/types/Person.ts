@@ -2,7 +2,6 @@ import GqlContext from "GqlContext";
 import { Person, Gender } from "typingsGql";
 import { BaseResolverType, copyFromRestResponse } from "utils/graphql";
 
-import { Person as PersonFromAPI } from "dataSources/tvmaze/PeopleAPI";
 import { RootType as ShowCharactersListType } from "../../ShowCharacter/types/ShowCharactersList";
 
 export type RootType = ID;
@@ -22,7 +21,7 @@ const getItem = (root: RootType, context: GqlContext) => {
 
 const countryOfBirth = async (
   root: RootType,
-  _args: any,
+  _args: unknown,
   context: GqlContext
 ): Promise<string | null> => {
   const item = await getItem(root, context);
@@ -31,7 +30,7 @@ const countryOfBirth = async (
 
 const gender = async (
   root: RootType,
-  _args: any,
+  _args: unknown,
   context: GqlContext
 ): Promise<Gender | null> => {
   const item = await getItem(root, context);

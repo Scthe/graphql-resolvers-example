@@ -30,7 +30,7 @@ export const loggingPlugin: ApolloServerPlugin<GqlContext> = {
 
 export const stitchSchema = (
   rootDir: string,
-  sufix: string = ".graphql"
+  sufix = ".graphql"
 ): DocumentNode[] => {
   const schemaFiles = glob.sync(`${rootDir}/**/*${sufix}`);
   return schemaFiles.map((filePath) =>
@@ -53,7 +53,7 @@ export const copyFromRestResponse = <
   // we return resolver
   return async (
     root: RootT,
-    _: any,
+    _: unknown,
     context: GqlContext
   ): Promise<RestResponse[K]> => {
     const item = await getItem(root, context);
@@ -74,7 +74,7 @@ export const listMetaResolver = <RootT>(
   // we return resolver
   return async (
     root: RootT,
-    _args: any,
+    _args: unknown,
     context: GqlContext
   ): Promise<ListMeta> => {
     const ids = await getItems(root, context);
@@ -115,7 +115,7 @@ type ResolverKeys<T, Overrides> = keyof Required<
 export type BaseResolverType<
   RootType,
   T,
-  Overrides extends Partial<Record<keyof T, any>> = {}
+  Overrides extends Partial<Record<keyof T, any>> = {} // eslint-disable-line @typescript-eslint/ban-types
 > = {
   // We add Required<> to make sure even optional properties have the resolver.
   [k in ResolverKeys<T, Overrides>]: IFieldResolver<

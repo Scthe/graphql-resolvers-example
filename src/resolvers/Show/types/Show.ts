@@ -23,7 +23,7 @@ const getItem = (id: RootType, context: GqlContext) => {
 
 const imdbId = async (
   root: RootType,
-  _args: any,
+  _args: unknown,
   context: GqlContext
 ): Promise<string> => {
   const item = await getItem(root, context);

@@ -146,7 +146,7 @@ describe("GraphQL: show()", () => {
   });
 
   test("should fetch cast member", () => {
-    const expectCorrectShow = (show: any) => {
+    const expectCorrectShow = (show: GqlSchemaShow) => {
       expect(show.id).toBe("" + ShowMock.id);
       expect(show.name).toBe(ShowMock.name);
     };

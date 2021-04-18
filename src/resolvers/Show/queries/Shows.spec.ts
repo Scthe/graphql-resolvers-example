@@ -5,6 +5,7 @@ import app from "../../../index";
 import * as gqlExamples from "./Shows.example";
 import { ShowsList as GqlSchemaShowsList } from "typingsGql";
 import { setupNock } from "utils/forTests";
+import { parseId } from "utils";
 
 import ShowMock from "dataSources/tvmaze/mocks/show.mock.json";
 import { ShowSearchItem } from "dataSources/tvmaze/ShowsAPI";
@@ -24,7 +25,7 @@ describe("GraphQL: shows()", () => {
       score,
       show: {
         ...ShowMock,
-        id: id as any,
+        id: parseId(id),
         name: `show-${id}`,
       },
     });

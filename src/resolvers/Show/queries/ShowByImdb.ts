@@ -3,7 +3,7 @@ import { QueryShowByImdbArgs } from "typingsGql";
 import { RootType as ShopType } from "../types/Show";
 
 export default (
-  _root: any,
+  _root: unknown,
   args: QueryShowByImdbArgs,
   context: GqlContext
 ): Promise<ShopType> => {

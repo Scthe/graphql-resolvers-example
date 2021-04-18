@@ -22,15 +22,16 @@ const server = new ApolloServer({
   debug: true,
   plugins: [loggingPlugin],
   logger: {
-    debug: () => {},
-    info: () => {},
-    warn: () => {},
+    debug: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+    info: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+    warn: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
     error: (e) => console.error(e),
   },
 });
 
 // setup express
 const app = express();
+// eslint-disable-next-line @typescript-eslint/ban-types
 app.use((req: express.Request, _res: express.Response, next: Function) => {
   log(chalk.green.bold(`\n${req.method} ${req.url}`));
   next();

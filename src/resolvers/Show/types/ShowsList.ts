@@ -14,7 +14,7 @@ const getItems = (root: RootType, context: GqlContext) => {
 
 const node = (
   root: RootType,
-  _args: any,
+  _args: unknown,
   context: GqlContext
 ): Promise<NodeType[]> => {
   return getItems(root, context);

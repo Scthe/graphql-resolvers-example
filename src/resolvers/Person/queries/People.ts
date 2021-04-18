@@ -1,6 +1,6 @@
 import { QueryPeopleArgs } from "typingsGql";
 import { RootType as PersonsListRoot } from "../types/PeoplesList";
 
-export default (_root: any, args: QueryPeopleArgs): PersonsListRoot => ({
+export default (_root: unknown, args: QueryPeopleArgs): PersonsListRoot => ({
   name: args.name || "",
 });

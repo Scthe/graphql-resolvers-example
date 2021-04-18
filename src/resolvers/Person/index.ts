@@ -12,4 +12,4 @@ export default {
   },
   Person,
   PeoplesList,
-} as IResolvers<any, any>;
+} as IResolvers<any, any>; // eslint-disable-line @typescript-eslint/no-explicit-any

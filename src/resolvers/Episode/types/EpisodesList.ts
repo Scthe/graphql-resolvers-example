@@ -17,7 +17,7 @@ const getItems = (root: RootType, context: GqlContext) => {
 
 const node = async (
   root: RootType,
-  _args: any,
+  _args: unknown,
   context: GqlContext
 ): Promise<NodeType[]> => {
   const ids = await getItems(root, context);

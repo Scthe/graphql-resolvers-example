@@ -4,6 +4,7 @@ import EpisodesAPI from "./tvmaze/EpisodesAPI";
 import PeopleAPI from "./tvmaze/PeopleAPI";
 import ShowCharactersAPI from "./tvmaze/ShowCharactersAPI";
 
+// HINT: do not specify type of this object for nice auto type inference
 const dataSources = () => {
   return {
     showsAPI: new ShowsAPI(),

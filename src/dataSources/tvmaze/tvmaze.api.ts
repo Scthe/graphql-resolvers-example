@@ -1,8 +1,10 @@
+import { parseId } from "utils";
+
 export const URL = "https://api.tvmaze.com";
 
 export type SearchResponseItem<
   Key extends string | number | symbol,
-  T extends object
+  T extends object // eslint-disable-line @typescript-eslint/ban-types
 > = {
   [k in Key]: T;
 } & {
@@ -24,7 +26,7 @@ export type Links<K extends string> = {
 export const getIdFromUrl = (url: string): ID => {
   const numStr = url.match(/\d+/);
   if (numStr != null && numStr.length > 0) {
-    return parseInt(numStr[0], 10) as any;
+    return parseId(numStr[0]);
   }
   throw new Error(`Invalid url '${url}' provided to getIdFromUrl`);
 };
