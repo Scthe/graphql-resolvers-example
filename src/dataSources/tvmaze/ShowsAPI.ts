@@ -12,12 +12,10 @@ export interface Show {
   runtime: number;
   premiered: string;
   genres: string[];
-  network: string;
-  country: string;
   summary: string;
 }
 
-type ShowsListItem = tvmaze.ApiListResponse<"show", Show>;
+export type ShowsListItem = tvmaze.ApiListResponse<"show", Show>;
 
 /** Api to get shows data */
 export default class ShowsAPI extends RestResource {

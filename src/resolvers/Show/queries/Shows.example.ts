@@ -1,5 +1,4 @@
-// TODO add tests here too
-export const GET_LIST_GQL = `{
+export const GQL_SHOWS = `{
   shows(name: "House"){
     meta{
       totalCount

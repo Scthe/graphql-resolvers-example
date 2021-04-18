@@ -2,21 +2,19 @@
 
 exports[`GraphQL: show() should fetch basic item properties 1`] = `
 Object {
-  "show": Object {
-    "genres": Array [
-      "Drama",
-      "Mystery",
-      "Medical",
-    ],
-    "id": "118",
-    "language": "English",
-    "name": "House",
-    "premiered": "2004-11-16",
-    "runtime": 60,
-    "status": "Ended",
-    "summary": "<p>Sink your teeth into meaty drama and intrigue with <b>House</b>, FOX's take on mystery, where the villain is a medical malady and the hero is an irreverent, controversial doctor who trusts no one, least of all his patients.</p>",
-    "type": "Scripted",
-  },
+  "genres": Array [
+    "Drama",
+    "Mystery",
+    "Medical",
+  ],
+  "id": "118",
+  "language": "English",
+  "name": "House",
+  "premiered": "2004-11-16",
+  "runtime": 60,
+  "status": "Ended",
+  "summary": "<p>Sink your teeth into meaty drama and intrigue with <b>House</b>, FOX's take on mystery, where the villain is a medical malady and the hero is an irreverent, controversial doctor who trusts no one, least of all his patients.</p>",
+  "type": "Scripted",
 }
 `;
 
@@ -102,8 +100,6 @@ Object {
 
 exports[`GraphQL: show() should only fetch what is needed 1`] = `
 Object {
-  "show": Object {
-    "id": "118",
-  },
+  "id": "118",
 }
 `;

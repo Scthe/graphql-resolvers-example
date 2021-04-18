@@ -57,8 +57,8 @@ describe("GraphQL: show()", () => {
         query: gqlExamples.GQL_SHOW_ONLY_ID,
       })
       .then((resp) => {
-        const item = resp.body.data;
-        expect(item.show.id).toBe("118");
+        const item = resp.body.data.show as GqlSchemaShow;
+        expect(item.id).toBe("118");
         expect(item).toMatchSnapshot(); // just for a good measure
       });
   });
@@ -74,8 +74,8 @@ describe("GraphQL: show()", () => {
         query: gqlExamples.GQL_SHOW_FIELDS,
       })
       .then((resp) => {
-        const item = resp.body.data;
-        expect(item.show.id).toBe("" + ShowMock.id);
+        const item = resp.body.data.show as GqlSchemaShow;
+        expect(item.id).toBe("" + ShowMock.id);
         expect(item).toMatchSnapshot(); // just for a good measure
       })
       .finally();
