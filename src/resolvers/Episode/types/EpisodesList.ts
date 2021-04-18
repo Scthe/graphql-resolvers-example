@@ -1,6 +1,5 @@
 import GqlContext from "GqlContext";
-import { ListMeta } from "typingsGql";
-import { PaginatedResolver } from "utils/graphql";
+import { listMetaResolver, PaginatedResolver } from "utils/graphql";
 import { RootType as NodeType } from "./Episode";
 
 export type RootType = {
@@ -14,17 +13,6 @@ const getItems = (root: RootType, context: GqlContext) => {
     root.showId,
     root.seasonId
   );
-};
-
-const meta = async (
-  root: RootType,
-  _args: any,
-  context: GqlContext
-): Promise<ListMeta> => {
-  const ids = await getItems(root, context);
-  return {
-    totalCount: ids.length,
-  };
 };
 
 const node = async (
@@ -42,7 +30,7 @@ const node = async (
 
 const resolver: ResolverType = {
   node,
-  meta,
+  meta: listMetaResolver(getItems),
 };
 
 export default resolver;

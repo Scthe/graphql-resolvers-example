@@ -1,6 +1,5 @@
 import GqlContext from "GqlContext";
-import { ListMeta } from "typingsGql";
-import { PaginatedResolver } from "utils/graphql";
+import { listMetaResolver, PaginatedResolver } from "utils/graphql";
 import { RootType as NodeType } from "./Show";
 
 // Arguments for search. You can also add `ordering` here etc.
@@ -13,17 +12,6 @@ const getItems = (root: RootType, context: GqlContext) => {
   return context.dataSources.showsAPI.findByName(root.name);
 };
 
-const meta = async (
-  root: RootType,
-  _args: any,
-  context: GqlContext
-): Promise<ListMeta> => {
-  const ids = await getItems(root, context);
-  return {
-    totalCount: ids.length,
-  };
-};
-
 const node = (
   root: RootType,
   _args: any,
@@ -34,7 +22,7 @@ const node = (
 
 const resolver: ResolverType = {
   node,
-  meta,
+  meta: listMetaResolver(getItems),
 };
 
 export default resolver;

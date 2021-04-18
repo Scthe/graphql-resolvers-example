@@ -15,7 +15,7 @@ export interface Show {
   summary: string;
 }
 
-export type ShowsListItem = tvmaze.ApiListResponse<"show", Show>;
+export type ShowSearchItem = tvmaze.SearchResponseItem<"show", Show>;
 
 /** Api to get shows data */
 export default class ShowsAPI extends RestResource {
@@ -48,7 +48,7 @@ export default class ShowsAPI extends RestResource {
     searchNames: readonly string[]
   ): DataLoaderReturnType<ID[]> => {
     const name = searchNames[0]; // batching is off for this request
-    const items = await this.get<ShowsListItem[]>(`search/shows?q=${name}`);
+    const items = await this.get<ShowSearchItem[]>(`search/shows?q=${name}`);
     const ids = items.map((e) => {
       this.addToCache(e.show);
       return e.show.id;

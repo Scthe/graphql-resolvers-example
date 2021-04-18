@@ -1,5 +1,4 @@
 import fs from "fs";
-import path from "path";
 import glob from "glob";
 import { gql } from "apollo-server-express";
 import { GraphQLResolveInfo } from "graphql";
@@ -10,26 +9,10 @@ import chalk from "chalk";
 import { ListMeta } from "typingsGql";
 import GqlContext from "../GqlContext";
 import log from "./log";
+import { ResourceList } from "dataSources/RestResource";
 
-/** Resolver factory for simple properties */
-export const copyFromRestResponse = <
-  RootT,
-  RestResponse,
-  K extends keyof RestResponse
->(
-  getItem: (root: RootT, ctx: GqlContext) => Promise<RestResponse>,
-  propName: K
-) => {
-  // we return resolver
-  return async (
-    root: RootT,
-    _: any,
-    context: GqlContext
-  ): Promise<RestResponse[K]> => {
-    const item = await getItem(root, context);
-    return item[propName];
-  };
-};
+/////////
+// init utils
 
 export const loggingPlugin: ApolloServerPlugin<GqlContext> = {
   requestDidStart() {
@@ -56,7 +39,53 @@ export const stitchSchema = (
 };
 
 /////////
-// Types:
+// Resolver utils
+
+/** Resolver factory for simple properties */
+export const copyFromRestResponse = <
+  RootT,
+  RestResponse,
+  K extends keyof RestResponse
+>(
+  getItem: (root: RootT, ctx: GqlContext) => Promise<RestResponse>,
+  propName: K
+) => {
+  // we return resolver
+  return async (
+    root: RootT,
+    _: any,
+    context: GqlContext
+  ): Promise<RestResponse[K]> => {
+    const item = await getItem(root, context);
+    return item[propName];
+  };
+};
+
+/**
+ * tvmaze API does not return totalCount to listing responses. This util will
+ * create resolver, that returns pagination metadata from returned items list.
+ *
+ * It is VERY simplified compared to normal use cases, but there are just so many
+ * different pagination styles..
+ */
+export const listMetaResolver = <RootT>(
+  getItems: (root: RootT, ctx: GqlContext) => ResourceList
+) => {
+  // we return resolver
+  return async (
+    root: RootT,
+    _args: any,
+    context: GqlContext
+  ): Promise<ListMeta> => {
+    const ids = await getItems(root, context);
+    return {
+      totalCount: ids.length,
+    };
+  };
+};
+
+/////////
+// Types
 
 /** Resolver returns either value or a promise */
 type ResolverFnReturnType<T> = T | Promise<T>;
