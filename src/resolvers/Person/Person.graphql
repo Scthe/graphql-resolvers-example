@@ -1,0 +1,15 @@
+extend type Query {
+  person(id: ID!): Person!
+  people(name: String): PeoplesList!
+}
+
+type Person {
+  id: ID!
+  name: String!
+  castCredits: ShowCharactersList!
+}
+
+type PeoplesList {
+  node: [Person!]!
+  meta: ListMeta!
+}

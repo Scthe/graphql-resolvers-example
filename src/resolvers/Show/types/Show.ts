@@ -1,7 +1,9 @@
 import GqlContext from "GqlContext";
 import { Show } from "typingsGql";
 import { BaseResolverType, copyFromRestResponse } from "utils/graphql";
+
 import { RootType as SeasonsListType } from "../../Season/types/SeasonsList";
+import { RootType as ShowCharactersListType } from "../../ShowCharacter/types/ShowCharactersList";
 
 export type RootType = ID;
 
@@ -11,6 +13,7 @@ type ResolverType = BaseResolverType<
   {
     id: RootType;
     seasons: SeasonsListType;
+    cast: ShowCharactersListType;
   }
 >;
 
@@ -31,6 +34,7 @@ const resolver: ResolverType = {
   // country: copyFromRestResponse(getItem, "country"),
   summary: copyFromRestResponse(getItem, "summary"),
   seasons: (root: RootType) => ({ showId: root }),
+  cast: (root: RootType) => ({ showId: root }),
 };
 
 export default resolver;

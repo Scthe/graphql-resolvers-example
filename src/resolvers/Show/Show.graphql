@@ -18,6 +18,7 @@ type Show {
   summary: String!
   # TODO imdb
   seasons: SeasonsList! # Paginated collection with total
+  cast: ShowCharactersList!
 }
 
 type ShowsList {

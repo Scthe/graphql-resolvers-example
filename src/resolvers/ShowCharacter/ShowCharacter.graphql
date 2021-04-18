@@ -1,0 +1,11 @@
+type ShowCharacter {
+  id: ID!
+  name: String!
+  show: Show!
+  person: Person!
+}
+
+type ShowCharactersList {
+  node: [ShowCharacter!]!
+  meta: ListMeta!
+}
