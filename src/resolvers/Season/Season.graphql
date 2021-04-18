@@ -1,0 +1,14 @@
+type Season {
+  id: ID!
+  idx: Int!
+  show: Show!
+  summary: String
+  #network: String
+  #country: String
+  episodes: EpisodesList!
+}
+
+type SeasonsList {
+  node: [Season!]!
+  meta: ListMeta!
+}

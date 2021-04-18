@@ -1,0 +1,15 @@
+type Episode {
+  id: ID!
+  idx: Int!
+  name: String!
+  show: Show!
+  season: Season!
+  summary: String
+  airdate: String! # TODO date
+  runtime: Int!
+}
+
+type EpisodesList {
+  node: [Episode!]!
+  meta: ListMeta!
+}

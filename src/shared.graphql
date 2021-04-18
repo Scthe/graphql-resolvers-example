@@ -1,0 +1,10 @@
+type Query {
+  _empty: String # required by graphql, cannot be empty
+}
+type Mutation {
+  _empty: String # required by graphql, cannot be empty
+}
+
+type ListMeta {
+  totalCount: Int!
+}

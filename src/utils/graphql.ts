@@ -1,7 +1,15 @@
-import { IResolverObject } from "apollo-server";
+import fs from "fs";
+import path from "path";
+import glob from "glob";
+import { gql } from "apollo-server-express";
 import { GraphQLResolveInfo } from "graphql";
+import { ApolloServerPlugin } from "apollo-server-plugin-base";
+import { DocumentNode } from "graphql";
+import chalk from "chalk";
+
 import { ListMeta } from "typingsGql";
 import GqlContext from "../GqlContext";
+import log from "./log";
 
 /** Resolver factory for simple properties */
 export const copyFromRestResponse = <
@@ -21,6 +29,30 @@ export const copyFromRestResponse = <
     const item = await getItem(root, context);
     return item[propName];
   };
+};
+
+export const loggingPlugin: ApolloServerPlugin<GqlContext> = {
+  requestDidStart() {
+    return {
+      didResolveOperation(gqlReq) {
+        const opName =
+          gqlReq.operationName != null
+            ? gqlReq.operationName
+            : "unknown_operation";
+        log(chalk.green.bold("GQL"), opName);
+      },
+    };
+  },
+};
+
+export const stitchSchema = (
+  rootDir: string,
+  sufix: string = ".graphql"
+): DocumentNode[] => {
+  const schemaFiles = glob.sync(`${rootDir}/**/*${sufix}`);
+  return schemaFiles.map((filePath) =>
+    gql(fs.readFileSync(filePath, { encoding: "utf8" }))
+  );
 };
 
 /////////

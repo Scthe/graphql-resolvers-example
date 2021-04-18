@@ -1,36 +1,19 @@
-import fs from "fs";
-import path from "path";
 import express from "express";
 import chalk from "chalk";
-import { ApolloServerPlugin } from "apollo-server-plugin-base";
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 
-import GqlContext, { createContext } from "./GqlContext";
+import { createContext } from "./GqlContext";
 import resolvers from "./resolvers";
 import dataSources from "./dataSources";
 import log from "./utils/log";
+import { loggingPlugin, stitchSchema } from "./utils/graphql";
 
 const port = 8080;
 const gqlEndpoint = "/graphql";
 
 // set up apollo server
-const SCHEMA_FILE_PATH = path.join(__dirname, "./schema.graphql");
-const typeDefs = gql(fs.readFileSync(SCHEMA_FILE_PATH, { encoding: "utf8" }));
-const loggingPlugin: ApolloServerPlugin<GqlContext> = {
-  requestDidStart() {
-    return {
-      didResolveOperation(gqlReq) {
-        const opName =
-          gqlReq.operationName != null
-            ? gqlReq.operationName
-            : "unknown_operation";
-        log(chalk.green.bold("GQL"), opName);
-      },
-    };
-  },
-};
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: stitchSchema(__dirname),
   resolvers,
   dataSources,
   context: createContext,

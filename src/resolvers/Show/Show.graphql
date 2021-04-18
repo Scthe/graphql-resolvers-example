@@ -1,11 +1,7 @@
-type Query {
+extend type Query {
   # TODO add query by imdb
   show(id: ID!): Show!
   shows(name: String): ShowsList!
-}
-
-type ListMeta {
-  totalCount: Int!
 }
 
 type Show {
@@ -26,36 +22,5 @@ type Show {
 
 type ShowsList {
   node: [Show!]!
-  meta: ListMeta!
-}
-
-type Season {
-  id: ID!
-  idx: Int!
-  show: Show!
-  summary: String
-  #network: String
-  #country: String
-  episodes: EpisodesList!
-}
-
-type SeasonsList {
-  node: [Season!]!
-  meta: ListMeta!
-}
-
-type Episode {
-  id: ID!
-  idx: Int!
-  name: String!
-  show: Show!
-  season: Season!
-  summary: String
-  airdate: String! # TODO date
-  runtime: Int!
-}
-
-type EpisodesList {
-  node: [Episode!]!
   meta: ListMeta!
 }
