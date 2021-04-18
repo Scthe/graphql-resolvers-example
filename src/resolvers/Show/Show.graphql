@@ -1,22 +1,23 @@
 extend type Query {
   # TODO add query by imdb
   show(id: ID!): Show!
+  showByIMDB(imdbId: ID!): Show!
   shows(name: String): ShowsList!
 }
 
 type Show {
   id: ID!
+  imdbId: String!
   name: String!
   type: String! # TODO enum?
   language: String!
   genres: [String!]!
   status: String! # TODO enum
-  runtime: Int!
+  runtime: Int
   premiered: String! # TODO date
   #network: String
   #country: String
   summary: String!
-  # TODO imdb
   seasons: SeasonsList! # Paginated collection with total
   cast: ShowCharactersList!
 }

@@ -44,7 +44,6 @@ const gender = async (
   return null;
 };
 
-// TODO add tests, including for shows
 const resolver: ResolverType = {
   id: (root: RootType) => root,
   name: copyFromRestResponse(getItem, "name"),

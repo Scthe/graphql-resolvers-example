@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphQL: showByImdb() should fetch basic item properties 1`] = `
+Object {
+  "genres": Array [
+    "Drama",
+    "Mystery",
+    "Medical",
+  ],
+  "id": "118",
+  "imdbId": "tt3230854",
+  "language": "English",
+  "name": "House",
+  "premiered": "2004-11-16",
+  "runtime": 60,
+  "status": "Ended",
+  "summary": "<p>Sink your teeth into meaty drama and intrigue with <b>House</b>, FOX's take on mystery, where the villain is a medical malady and the hero is an irreverent, controversial doctor who trusts no one, least of all his patients.</p>",
+  "type": "Scripted",
+}
+`;

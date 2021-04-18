@@ -34,7 +34,6 @@ export default class PeopleAPI extends RestResource {
   private getByIds = async (
     ids: readonly ID[]
   ): DataLoaderReturnType<Person> => {
-    // TODO `people/${id}?embed=castcredits` ?
     const promises = ids.map((id) => this.get<Person>(`people/${id}`));
     const result = await Promise.allSettled(promises);
     return MyDataLoader.collectSettledPromises(result);

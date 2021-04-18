@@ -89,6 +89,7 @@ module.exports = {
     "^typingsGql$": '<rootDir>/src/_generated/graphql.ts',
     "^dataSources/(.*)": "<rootDir>/src/dataSources/$1",
     "^utils/(.*)": "<rootDir>/src/utils/$1",
+    "^utils$": "<rootDir>/src/utils/index.ts",
   },
   // moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
 

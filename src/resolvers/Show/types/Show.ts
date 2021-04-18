@@ -11,7 +11,7 @@ type ResolverType = BaseResolverType<
   RootType,
   Show,
   {
-    id: RootType;
+    id: ID;
     seasons: SeasonsListType;
     cast: ShowCharactersListType;
   }
@@ -19,6 +19,15 @@ type ResolverType = BaseResolverType<
 
 const getItem = (id: RootType, context: GqlContext) => {
   return context.dataSources.showsAPI.getOne(id);
+};
+
+const imdbId = async (
+  root: RootType,
+  _args: any,
+  context: GqlContext
+): Promise<string> => {
+  const item = await getItem(root, context);
+  return item.externals.imdb;
 };
 
 const resolver: ResolverType = {
@@ -33,6 +42,7 @@ const resolver: ResolverType = {
   // network: copyFromRestResponse(getItem, "network"),
   // country: copyFromRestResponse(getItem, "country"),
   summary: copyFromRestResponse(getItem, "summary"),
+  imdbId,
   seasons: (root: RootType) => ({ showId: root }),
   cast: (root: RootType) => ({ showId: root }),
 };

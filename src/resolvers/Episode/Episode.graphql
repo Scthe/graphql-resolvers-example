@@ -1,6 +1,6 @@
 type Episode {
   id: ID!
-  idx: Int!
+  idx: Int
   name: String!
   show: Show!
   season: Season!

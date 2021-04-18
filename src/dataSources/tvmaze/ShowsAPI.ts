@@ -13,6 +13,9 @@ export interface Show {
   premiered: string;
   genres: string[];
   summary: string;
+  externals: {
+    imdb: string;
+  };
 }
 
 export type ShowSearchItem = tvmaze.SearchResponseItem<"show", Show>;
@@ -24,6 +27,14 @@ export default class ShowsAPI extends RestResource {
   }
 
   getOne = async (id: ID): Promise<Show> => this.dataLoader.load(id);
+
+  getByImdbId = async (imdbId: string): Promise<ID> => {
+    // TBH we could cache result of this request in `Map<imdbId, ID>`,
+    // but no need to complicate for now.
+    const show = await this.get<Show>(`/lookup/shows?imdb=${imdbId}`);
+    this.addToCache(show);
+    return show.id;
+  };
 
   findByName = async (name: string): ResourceList =>
     this.searchDataLoader.load(name);

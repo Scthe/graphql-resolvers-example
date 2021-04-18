@@ -9,6 +9,7 @@ export const GQL_SHOW_FIELDS = `
 query GetShowFields {
   show(id: 118){
     id
+    imdbId
     name
     type
     language

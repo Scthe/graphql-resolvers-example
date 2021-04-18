@@ -21,8 +21,6 @@ const getItem = (root: RootType, context: GqlContext) => {
   return context.dataSources.seasonsAPI.getOne(root.id);
 };
 
-const show = (root: RootType): ShowType => root.showId;
-
 const episodes = (root: RootType): EpisodesListType => ({
   showId: root.showId,
   seasonId: root.id,
@@ -32,7 +30,7 @@ const resolver: ResolverType = {
   id: (root: RootType) => root.id,
   idx: copyFromRestResponse(getItem, "number"),
   summary: copyFromRestResponse(getItem, "summary"),
-  show,
+  show: (root: RootType) => root.showId,
   episodes,
 };
 
