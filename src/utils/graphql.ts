@@ -90,6 +90,7 @@ export const listMetaResolver = <RootT>(
 /** Resolver returns either value or a promise */
 type ResolverFnReturnType<T> = T | Promise<T>;
 
+/** Type of resolver funcion. Usuall `(root, args, context, info) => something` */
 type IFieldResolver<RootType, TReturnType, TArgs = Record<string, any>> = (
   source: RootType,
   args: TArgs,
@@ -98,32 +99,55 @@ type IFieldResolver<RootType, TReturnType, TArgs = Record<string, any>> = (
 ) => ResolverFnReturnType<TReturnType>;
 
 /**
- * We resolve the object based on generated schema typings.
- * Also remove '__typename' from object definition.
+ * We resolve the object based on generated schema typings
+ * (minus '__typename' that is added by framework).
  * We can also override property types if needed.
  */
-type MergeResolverTypes<T, Overrides> = Omit<
-  T,
-  keyof Overrides | "__typename"
-> &
-  Overrides;
+type MergeResolverTypes<T, Overrides> = Overrides &
+  Omit<T, keyof Overrides | "__typename">;
 
+/**
+ * All keys that the resolver object should contain.
+ * We add Required<> to make sure even optional properties have the resolver.
+ */
 type ResolverKeys<T, Overrides> = keyof Required<
   MergeResolverTypes<T, Overrides>
 >;
 
+/**
+ * Create type for resolver object.
+ *
+ * @param RootType type of `root`/`parent` argument in resolver function.
+ * @param T type of the object we write resolver for
+ * @param Overrides override typings generated from `T` param. You will use it when object has relations to other schema types (both 1:1 and 1:N). In this case You do not return objects themselves, but the IDs that other resolvers will use.
+ *
+ * Example usage:
+ * ```
+ * import { RootType as SeasonsListType } from "../../Season/types/SeasonsList";
+ * import { RootType as ShowCharactersListType } from "../../ShowCharacter/types/ShowCharactersList";
+ *
+ * ...
+ *
+ * type ResolverType = BaseResolverType<RootType, Show, {
+ *   id: ID;
+ *   seasons: SeasonsListType;
+ *   cast: ShowCharactersListType;
+ * }>;
+ * ```
+ */
 export type BaseResolverType<
   RootType,
   T,
   Overrides extends Partial<Record<keyof T, any>> = {} // eslint-disable-line @typescript-eslint/ban-types
 > = {
-  // We add Required<> to make sure even optional properties have the resolver.
+  // map resolver keys to resolver funcions
   [k in ResolverKeys<T, Overrides>]: IFieldResolver<
     RootType,
     MergeResolverTypes<T, Overrides>[k]
   >;
 };
 
+/** Lists always have similar types. Generate resolver type for them. */
 export type PaginatedResolver<RootType, TNode = ID> = {
   node: IFieldResolver<RootType, TNode[]>;
   meta: IFieldResolver<RootType, ListMeta>;

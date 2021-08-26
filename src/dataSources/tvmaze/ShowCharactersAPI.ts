@@ -54,6 +54,8 @@ export default class ShowCharactersAPI extends RestResource {
   private _findByPerson = async (
     personIds: readonly ID[]
   ): DataLoaderReturnType<ID[]> => {
+    this.debugLog("_findByPerson", personIds);
+
     const personId = personIds[0]; // batching is off for this request
     const items = await this.get<CastCreditWithEmbededCharacter[]>(
       `/people/${personId}/castcredits?embed=character`
@@ -73,6 +75,8 @@ export default class ShowCharactersAPI extends RestResource {
   private _findByShow = async (
     showIds: readonly ID[]
   ): DataLoaderReturnType<ID[]> => {
+    this.debugLog("_findByShow", showIds);
+
     const showId = showIds[0]; // batching is off for this request
     const items = await this.get<ShowCast[]>(`shows/${showId}/cast`);
     const ids = items.map((e) => {
@@ -89,10 +93,12 @@ export default class ShowCharactersAPI extends RestResource {
     return [ids]; // wrap in array just as dataloader requires
   };
 
+  // Map<PersonId, ShowCharacterId[]>
   private byPersonDataLoader = new MyDataLoader(this._findByPerson, {
     batch: false,
   });
 
+  // Map<ShowId, ShowCharacterId[]>
   private byShowDataLoader = new MyDataLoader(this._findByShow, {
     batch: false,
   });

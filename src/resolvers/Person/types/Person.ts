@@ -1,19 +1,10 @@
 import GqlContext from "GqlContext";
-import { Person, Gender } from "typingsGql";
-import { BaseResolverType, copyFromRestResponse } from "utils/graphql";
-
-import { RootType as ShowCharactersListType } from "../../ShowCharacter/types/ShowCharactersList";
+import { Gender, PersonResolvers } from "typingsGql";
+import { copyFromRestResponse } from "utils/graphql";
 
 export type RootType = ID;
 
-type ResolverType = BaseResolverType<
-  RootType,
-  Person,
-  {
-    id: RootType;
-    castCredits: ShowCharactersListType;
-  }
->;
+type ResolverType = PersonResolvers;
 
 const getItem = (root: RootType, context: GqlContext) => {
   return context.dataSources.peopleAPI.getOne(root);
@@ -44,13 +35,14 @@ const gender = async (
 };
 
 const resolver: ResolverType = {
-  id: (root: RootType) => root,
+  id: async (root: RootType) => root,
   name: copyFromRestResponse(getItem, "name"),
-  birthday: copyFromRestResponse(getItem, "birthday"),
-  deathday: copyFromRestResponse(getItem, "deathday"),
+  // Bug in `graphql-codegen`: `birthday` is nullable in schema, but the generated code allows only `null` and not `undefined`
+  birthday: copyFromRestResponse(getItem, "birthday") as any,
+  deathday: copyFromRestResponse(getItem, "deathday") as any,
   gender,
   countryOfBirth,
-  castCredits: (root: RootType) => ({ personId: root }),
+  castCredits: async (root: RootType) => ({ personId: root }),
 };
 
 export default resolver;

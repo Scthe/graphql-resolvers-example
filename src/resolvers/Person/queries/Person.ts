@@ -1,6 +1,9 @@
-import { QueryPersonArgs } from "typingsGql";
-import { RootType as PersonType } from "../types/Person";
+import { QueryPersonArgs, QueryResolvers } from "typingsGql";
 import { parseId } from "utils";
 
-export default (_root: unknown, args: QueryPersonArgs): PersonType =>
-  parseId(args.id);
+const resolver: QueryResolvers["person"] = (
+  _root: unknown,
+  args: QueryPersonArgs
+) => parseId(args.id);
+
+export default resolver;

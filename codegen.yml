@@ -3,5 +3,23 @@ schema: "src/**/*.graphql"
 documents: null
 generates:
   src/_generated/graphql.ts:
+    config:
+      contextType: GqlContext
+      mappers:
+        ID: ID
+        Episode: ../resolvers/Episode/types/Episode#RootType as EpisodeRootType
+        EpisodesList: ../resolvers/Episode/types/EpisodesList#RootType as EpisodesListRootType
+        Person: ../resolvers/Person/types/Person#RootType as PersonRootType
+        PeoplesList: ../resolvers/Person/types/PeoplesList#RootType as PeoplesListRootType
+        Season: ../resolvers/Season/types/Season#RootType as SeasonRootType
+        SeasonsList: ../resolvers/Season/types/SeasonsList#RootType as SeasonsListRootType
+        Show: ../resolvers/Show/types/Show#RootType as ShowRootType
+        ShowsList: ../resolvers/Show/types/ShowsList#RootType as ShowsListRootType
+        ShowCharacter: ../resolvers/ShowCharacter/types/ShowCharacter#RootType as ShowCharacterRootType
+        ShowCharactersList: ../resolvers/ShowCharacter/types/ShowCharactersList#RootType as ShowCharactersListRootType
     plugins:
       - "typescript"
+      - "typescript-resolvers"
+      - add:
+          content:
+            - import GqlContext from '../GqlContext'; # default exports are not handled?

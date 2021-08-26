@@ -44,6 +44,7 @@ export default class ShowsAPI extends RestResource {
   };
 
   private getByIds = async (ids: readonly ID[]): DataLoaderReturnType<Show> => {
+    this.debugLog("getByIds", ids);
     // We get array of ids, normally we would want to use api like:
     // `shows/?id=1&id=2&id=42` to get all data in one request (thus solving n+1).
     // Since our API does not have this, we need to do this manually.
@@ -55,9 +56,11 @@ export default class ShowsAPI extends RestResource {
     return MyDataLoader.collectSettledPromises(result);
   };
 
-  private search = async (
+  private searchByShowNames = async (
     searchNames: readonly string[]
   ): DataLoaderReturnType<ID[]> => {
+    this.debugLog("searchByShowNames", searchNames);
+
     const name = searchNames[0]; // batching is off for this request
     const items = await this.get<ShowSearchItem[]>(`search/shows?q=${name}`);
     const ids = items.map((e) => {
@@ -67,14 +70,15 @@ export default class ShowsAPI extends RestResource {
     return [ids]; // wrap in array cause `searchNames` is an array
   };
 
-  // has to be on the end of the file, cause `this.getByIds` is undefined otherwise
+  // Map<ShowId, Show>
   private dataLoader = new MyDataLoader(this.getByIds);
 
+  // Map<searchedShow, ShowId[]>
   // Separate dataloader that maps search phrase to ID[].
-  // Since ID[] is not the same as `Show`.
+  //
   // We use dataloader, since there is no separate function to get totalCount of shows.
   // In our resolver implementation we call `findByName` twice (once for data and once for totalCount), and we want to deduplicate that with cache.
-  private searchDataLoader = new MyDataLoader(this.search, {
+  private searchDataLoader = new MyDataLoader(this.searchByShowNames, {
     batch: false, // turn off batching - we will always get a single item to `this.search`
   });
 }

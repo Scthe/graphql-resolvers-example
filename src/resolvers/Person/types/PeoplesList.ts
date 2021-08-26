@@ -1,12 +1,13 @@
+import { ResourceList } from "dataSources/RestResource";
 import GqlContext from "GqlContext";
-import { listMetaResolver, PaginatedResolver } from "utils/graphql";
-import { RootType as NodeType } from "./Person";
+import { PeoplesListResolvers } from "typingsGql";
+import { listMetaResolver } from "utils/graphql";
 
 // Arguments for search. You can also add `ordering` here etc.
 export type RootType = {
   name: string;
 };
-type ResolverType = PaginatedResolver<RootType, NodeType>;
+type ResolverType = PeoplesListResolvers;
 
 const getItems = (root: RootType, context: GqlContext) => {
   return context.dataSources.peopleAPI.findByName(root.name);
@@ -16,7 +17,7 @@ const node = (
   root: RootType,
   _args: unknown,
   context: GqlContext
-): Promise<NodeType[]> => {
+): ResourceList => {
   return getItems(root, context);
 };
 

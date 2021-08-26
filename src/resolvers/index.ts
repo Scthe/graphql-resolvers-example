@@ -6,6 +6,8 @@ import episodeResolver from "./Episode";
 import personResolver from "./Person";
 import showCharacterResolver from "./ShowCharacter";
 
+// TODO compile time assert that all resolvers were defined?
+
 const resolvers: Array<IResolvers> = [
   showResolver,
   seasonResolver,

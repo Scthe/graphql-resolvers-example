@@ -32,4 +32,8 @@ export default abstract class RestResource extends DataSource<GqlContext> {
     const urlObj = new url.URL(urlStr, this.baseURL);
     return urlObj.href;
   }
+
+  protected debugLog(...args: any[]): void {
+    log(chalk.green(`[Dataloader ${this.constructor.name}]`), ...args);
+  }
 }

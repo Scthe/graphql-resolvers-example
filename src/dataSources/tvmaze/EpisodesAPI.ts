@@ -35,14 +35,18 @@ export default class EpisodesAPI extends RestResource {
   private getByIds = async (
     ids: readonly ID[]
   ): DataLoaderReturnType<Episode> => {
+    this.debugLog("getByIds", ids);
+
     const promises = ids.map((id) => this.get<Episode>(`/episodes/${id}`));
     const result = await Promise.allSettled(promises);
     return MyDataLoader.collectSettledPromises(result);
   };
 
-  private search = async (
+  private getEpisodesForSeasons = async (
     keys: readonly EpisodeBySeasonKey[]
   ): DataLoaderReturnType<ID[]> => {
+    this.debugLog("getEpisodesForSeasons", keys);
+
     const promises = keys.map((key) =>
       this.get<Episode[]>(`seasons/${key.seasonId}/episodes`)
     );
@@ -54,11 +58,12 @@ export default class EpisodesAPI extends RestResource {
     });
   };
 
-  // has to be on the end of the file, cause `this.getByIds` is undefined otherwise
+  // Map<EpisodeId, Episode>
   private dataLoader = new MyDataLoader(this.getByIds);
 
-  // Separate dataloader that maps {showId, seasonId} to ids of episodes.
+  // Map<{ShowId, SeasonId}, EpisodeId[]>
+  //
   // IMPORTANT: this dataloader has a composite key. We could have used just seasonID,
   // but this is a better showcase od DataLoader.
-  private bySeasonDataLoader = new MyDataLoader(this.search);
+  private bySeasonDataLoader = new MyDataLoader(this.getEpisodesForSeasons);
 }

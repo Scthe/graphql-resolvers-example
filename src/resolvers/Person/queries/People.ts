@@ -1,6 +1,10 @@
-import { QueryPeopleArgs } from "typingsGql";
-import { RootType as PersonsListRoot } from "../types/PeoplesList";
+import { QueryPeopleArgs, QueryResolvers } from "typingsGql";
 
-export default (_root: unknown, args: QueryPeopleArgs): PersonsListRoot => ({
+const resolver: QueryResolvers["people"] = (
+  _root: unknown,
+  args: QueryPeopleArgs
+) => ({
   name: args.name || "",
 });
+
+export default resolver;

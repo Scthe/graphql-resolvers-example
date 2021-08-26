@@ -5,6 +5,7 @@ import PeopleAPI from "./tvmaze/PeopleAPI";
 import ShowCharactersAPI from "./tvmaze/ShowCharactersAPI";
 
 // HINT: do not specify type of this object for nice auto type inference
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const dataSources = () => {
   return {
     showsAPI: new ShowsAPI(),

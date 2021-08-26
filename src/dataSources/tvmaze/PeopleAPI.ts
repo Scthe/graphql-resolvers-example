@@ -34,14 +34,18 @@ export default class PeopleAPI extends RestResource {
   private getByIds = async (
     ids: readonly ID[]
   ): DataLoaderReturnType<Person> => {
+    this.debugLog("getByIds", ids);
+
     const promises = ids.map((id) => this.get<Person>(`people/${id}`));
     const result = await Promise.allSettled(promises);
     return MyDataLoader.collectSettledPromises(result);
   };
 
-  private search = async (
+  private searchByNames = async (
     searchNames: readonly string[]
   ): DataLoaderReturnType<ID[]> => {
+    this.debugLog("searchByNames", searchNames);
+
     const name = searchNames[0]; // batching is off for this request
     const items = await this.get<PersonSearchItem[]>(`search/people?q=${name}`);
     const ids = items.map((e) => {
@@ -51,7 +55,11 @@ export default class PeopleAPI extends RestResource {
     return [ids]; // wrap in array cause `searchNames` is an array
   };
 
+  // Map<PersonId, Person>
   private dataLoader = new MyDataLoader(this.getByIds);
 
-  private searchDataLoader = new MyDataLoader(this.search, { batch: false });
+  // Map<searchedName, PersonId[]>
+  private searchDataLoader = new MyDataLoader(this.searchByNames, {
+    batch: false,
+  });
 }
