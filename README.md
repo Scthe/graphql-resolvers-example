@@ -72,13 +72,13 @@ We can use `DataSources` pattern from Apollo Server with [DataLoader](https://ww
 * **batch calls** - calls to same endpoint with diferent parameters can be grouped into one. E.g. calls to `/person/1` and `/person/2` can be executed as `/person?id=1&id=2` if we want
 * **cache results** - any subsequent call to `/person/1` will skip the request and use the response received previously.
 
-I recommend [subclassing DataLoader](src\dataSources\MyDataLoader.ts) to provide some QoL improvements. We can use custom `cacheKeyFn` to handle objects as `DataLoader` keys, or have nicer semantic to add objects to cache.
+I recommend [subclassing DataLoader](src/dataSources/MyDataLoader.ts) to provide some QoL improvements. We can use custom `cacheKeyFn` to handle objects as `DataLoader` keys, or have nicer semantic to add objects to cache.
 
 
 
 ## Summary
 
-All in all, we have a simple architecture with a clear responsibility separation that automatically solves `n+1`. For each field in GraphQL request we have one place that is source of truth - respective resolver funcion. Our external API requests are [easy to trace](src\dataSources\RestResource.ts). And the system is actually quite simple. There are only resolvers and DataSources. Adding new data type requires only 2 new files. Adding new connection requires only field resolver that returns an `id` - rest of the properties will be filled based on this `id`.
+All in all, we have a simple architecture with a clear responsibility separation that automatically solves `n+1`. For each field in GraphQL request we have one place that is source of truth - respective resolver funcion. Our external API requests are [easy to trace](src/dataSources/RestResource.ts). And the system is actually quite simple. There are only resolvers and DataSources. Adding new data type requires only 2 new files. Adding new connection requires only field resolver that returns an `id` - rest of the properties will be filled based on this `id`.
 
 
 If you find my explanation not adequate, take a look at following articles exploring similar problem:
@@ -158,7 +158,7 @@ This repo only show per-request cache. If your cache persists between different 
 
 **Q: How can I verify that solution in this repo works?**
 
-Use `yarn test`. Here is [example test file](src\resolvers\Show\queries\Show.spec.ts) that asserts:
+Use `yarn test`. Here is [example test file](src/resolvers/Show/queries/Show.spec.ts) that asserts:
 
 * Query for `Show` by `id` that returns only `id` should no do any network requests. All needed data is already provided in the query's `args`. This is a test for overfetch.
 * Query for all `Show` properties that we can copy from a `https://api.tvmaze.com/shows/118`. This should result in a single network request. We rely here on deduplication.
@@ -184,7 +184,7 @@ I've used `nock` since it has nice defaults (like error on any unexpected reques
 
 Poorly. Typings work well when You have one function directly calling another. GraphQL resolvers are a typical **framework** that calls your code instead. There are no direct connections between resolvers that are in a different files. And since key point of GraphQL are graph connections, You need to manage the types by yourself. This is **VERY** brittle.
 
-`graphql-codegen` is an awesome package to generate typings from `.graphql` schema files. In [codegen.yml](./codegen.yml) I've provided an example configuration. You can see it in action in [Person module](src\resolvers\Person). Unfortunately nullable fields do not work with resolvers returning `undefined`, but otherwise it's a solid option. As an alternative, I've created [some utility types]([src\utils\graphql.ts]) that I found useful, along with [example usage](src\resolvers\Show\types\Show.ts).
+`graphql-codegen` is an awesome package to generate typings from `.graphql` schema files. In [codegen.yml](./codegen.yml) I've provided an example configuration. You can see it in action in [Person module](src/resolvers/Person). Unfortunately nullable fields do not work with resolvers returning `undefined`, but otherwise it's a solid option. As an alternative, I've created [some utility types](src/utils/graphql.ts) that I found useful, along with [example usage](src/resolvers/Show/types/Show.ts).
 
 Please note that [code first approach](https://blog.logrocket.com/code-first-vs-schema-first-development-graphql/) (using e.g. [type-graphql](https://github.com/MichalLytek/type-graphql)) does not solve this. Code first approach takes care of wiring different parts of the app together, but it's up to You to manually decide what type is returned from the resolver function.
 
